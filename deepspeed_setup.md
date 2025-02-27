@@ -54,9 +54,21 @@ If you're training a model, you probably want Stage 1/2; for inference, use Stag
 
 Once you've answered the questions, it will tell you where the default_config.yaml was saved. It will probably be something like: `/trinity/home/username/.cache/huggingface/accelerate/`. If you ever need to modify the setup, you can either edit the file directly, or start this section from the beginning.
 
-## Training Example with DeepSpeed + accelerate
+## Running DeepSpeed with accelerate
 
-## Inference Example with DeepSpeed + accelerate
+accelerate allows for a straight-forward integration of distributed training with DeepSpeed. Simply run the following line
+
+```accelerate launch train_and_save_ex.py --args```
+
+#### Training Example with DeepSpeed + accelerate
+
+Reference the train_and_save_ex.py for example code on how to run distributed loading, training, and saving of a large language model hosted publicly through Hugging Face.
+
+<u>Important Components of the Code:</u>
+
+#### Inference Example with DeepSpeed + accelerate
+
+Reference the load_and_generate_ex.py for example code on how to load
 
 ## FAQ
 
@@ -69,7 +81,7 @@ TO-DO
 <details>
 <summary>How do I determine if I need multiple GPUs to load and/or train my language model?</summary>
 <br>
-TO-DO
+Hugging Face provides a [neat resource](https://huggingface.co/docs/accelerate/en/usage_guides/model_size_estimator) that gives you an estimate of the amount of memory required for loading and training your model based on the precision of your weights, and training using different optimizers. Importantly, it also provides the memory requirement for the largest layer of the model. 
 </details>
 
 <details>
