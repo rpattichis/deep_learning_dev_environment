@@ -18,18 +18,6 @@ Once you've navigated to the directory where the deepspeed-requirements.txt file
 conda create --name env_name --file deepspeed-requirements.txt
 ```
 
-```
-conda create -n env_name python=3.10
-conda install pytorch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 pytorch-cuda=12.1 -c pytorch -c nvidia
-conda install -c "nvidia/label/cuda-12.1.0" cuda-toolkit
-
-conda install transformers 
-pip install trl peft ninja
-pip install flash-attn --no-build-isolation
-pip install deepspeed sentencepiece
-conda install -c conda-forge gcc=9 gxx=9
-```
-
 ## Setting up DeepSpeed with accelerate
 
 To create the appropriate Deepspeed config file, type ``` accelerate config ``` and answer the questions asked. Below are important ones with my personal notes:
@@ -64,11 +52,12 @@ accelerate allows for a straight-forward integration of distributed training wit
 
 Reference the ``train_and_save_ex.py`` for example code on how to run distributed loading, training, and saving of a large language model hosted publicly through Hugging Face.
 
-<u>Important Components of the Code:</u>
-
 #### Inference Example with DeepSpeed + accelerate
 
-Reference the ``load_and_generate_ex.py`` for example code on how to load
+Reference the ``load_and_generate_ex.py`` for example code on how to load Meltemi, a LLM for Standard Greek.
+
+__When saving a trained language model:__
+If you're using ZeRO stages 1 or 2, nothing needs to be changed. However, when using Stage 3, you have to manually update the config yaml file and set the `zero3_save_16bit_model` to `true`.
 
 ## FAQ
 
