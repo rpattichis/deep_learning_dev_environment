@@ -5,7 +5,7 @@ DeepSpeed, an optimization library built on top of PyTorch, implements several s
 
 Accelerate, built by HuggingFace on top of PyTorch, is meant to increase the interoperability of PyTorch code across any distributed configuration.
 
-_(The following procedure was tested on XXX)._
+_(The following procedure was tested on __Rocky Linux 8.5 x86_64__)._
 
 ## Environment Requirements
 You should first install Anaconda. Please refer to [this documentation](https://github.com/rpattichis/deep_learning_dev_environment/blob/master/dl_env_setup.md#setup-conda) on how to set up Anaconda on the cluster.
@@ -48,7 +48,7 @@ This is optional, but I choose no because it will output a yaml file that you ca
 This is super important. To understand your options, you can refer to this [documentation](https://www.deepspeed.ai/tutorials/zero/). Basically:
 - Stage 1: Splits the optimizer states across processes.
 - Stage 2: Splits optimizer and gradients across processes.
-- Stage 3: Split optimizer, gradient, and model weights across processes. Also includes CPU offload option.
+- Stage 3: Splits optimizer, gradient, and model weights across processes. Also includes CPU offload option.
 
 If you're training a model, you probably want Stage 1/2; for inference, use Stage 3. Note that if Stage 1 works for you, prefer that, as more partitioning across processes will slow down your computation at run time.
 
@@ -62,20 +62,20 @@ accelerate allows for a straight-forward integration of distributed training wit
 
 #### Training Example with DeepSpeed + accelerate
 
-Reference the train_and_save_ex.py for example code on how to run distributed loading, training, and saving of a large language model hosted publicly through Hugging Face.
+Reference the ``train_and_save_ex.py`` for example code on how to run distributed loading, training, and saving of a large language model hosted publicly through Hugging Face.
 
 <u>Important Components of the Code:</u>
 
 #### Inference Example with DeepSpeed + accelerate
 
-Reference the load_and_generate_ex.py for example code on how to load
+Reference the ``load_and_generate_ex.py`` for example code on how to load
 
 ## FAQ
 
 <details>
 <summary>What's the difference between HuggingFace's accelerate and Transformers packages?</summary>
 <br>
-TO-DO
+There are technically two documentations for using DeepSpeed, one for using Hugging Face's accelerate and one for using the Transformers packages. Under the hood, Transformers' integration actually relies on accelerate's integration.
 </details>
 
 <details>
@@ -87,7 +87,7 @@ Hugging Face provides a [neat resource](https://huggingface.co/docs/accelerate/e
 <details>
 <summary>How can I see how much memory DeepSpeed placed on different GPUs?</summary>
 <br>
-TO-DO
+After submitting a job and getting its jobID, you can run an interactive job using the jobID: ``srun --jobid=123456 nvidia-smi``.
 </details>
 
-*Written by Rebecca Pattichis and tested on XX February, 2025.* 
+*Written by Rebecca Pattichis and tested on 27 February, 2025.* 
