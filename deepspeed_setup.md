@@ -15,7 +15,17 @@ Download the deepspeed-requirements.txt to the desired location in the cluster.
 Once you've navigated to the directory where the deepspeed-requirements.txt file is located, create a new conda environment with the necessary installations with the following command line:
 
 ```
-conda create --name env_name --file deepspeed-requirements.txt
+conda create -n env_name python=3.10
+conda activate env_name
+
+conda install pytorch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 pytorch-cuda=12.1 -c pytorch -c nvidia
+conda install -c "nvidia/label/cuda-12.1.0" cuda-toolkit
+conda install transformers 
+pip install trl peft ninja
+pip install flash-attn --no-build-isolation
+pip install deepspeed sentencepiece
+conda install -c conda-forge gcc=9 gxx=9
+pip install protobuf
 ```
 
 ## Setting up DeepSpeed with accelerate
@@ -48,16 +58,20 @@ accelerate allows for a straight-forward integration of distributed training wit
 
 ```accelerate launch train_and_save_ex.py --args```
 
+This will automatically look for the configuration file you've previously created. If instead, you prefer to have different configurations for different code (vs. a universal configuration as above) you can create a copy of the configuration file above, modify as necessary, move it to the same directory as your .py file, and then run the following:
+
+```accelerate launch --config_file "deepspeed_config.yaml" train_and_save_ex.py --args```
+
 #### Training Example with DeepSpeed + accelerate
 
 Reference the ``train_and_save_ex.py`` for example code on how to run distributed loading, training, and saving of a large language model hosted publicly through Hugging Face.
 
+__When saving a trained language model:__
+If you're using ZeRO stages 1 or 2, nothing needs to be changed. However, when using Stage 3, you have to manually update the config yaml file and set the `zero3_save_16bit_model` to `true`. The uploaded config file example shows the configuration required for ZeRO-3 loading, training, and saving.
+
 #### Inference Example with DeepSpeed + accelerate
 
-Reference the ``load_and_generate_ex.py`` for example code on how to load Meltemi, a LLM for Standard Greek.
-
-__When saving a trained language model:__
-If you're using ZeRO stages 1 or 2, nothing needs to be changed. However, when using Stage 3, you have to manually update the config yaml file and set the `zero3_save_16bit_model` to `true`.
+_In progress, check in later!_
 
 ## FAQ
 
@@ -76,7 +90,7 @@ Hugging Face provides a [neat resource](https://huggingface.co/docs/accelerate/e
 <details>
 <summary>How can I see how much memory DeepSpeed placed on different GPUs?</summary>
 <br>
-After submitting a job and getting its jobID, you can run an interactive job using the jobID: ``srun --jobid=123456 nvidia-smi``.
+After submitting a job and getting its jobID, you can run an interactive job using the jobID: `srun --jobid=123456 nvidia-smi`.
 </details>
 
-*Written by Rebecca Pattichis and tested on 27 February, 2025.* 
+*Written by Rebecca Pattichis and tested on 4 March, 2025.* 
